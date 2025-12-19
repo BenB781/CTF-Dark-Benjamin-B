@@ -1,1 +1,14 @@
+Après une étude rapide du site, la page « members » permettant de retrouver des user par leur id semblait intéressante pour des injections sql.
+
+J’ai donc lancé SqlMap, qui m’a confirmé que le paramètre était vulnérable. En scannant le site avec l’outil j’ai vu l’existance d’une Data Base « Member_Sql_Injection », contenant la table « users ».
+
+Avec cette commande, j'ai récupérer le contenu de la table: 
+sqlmap -u "http://192.168.10.15/?page=member&id=1&Submit=Submit#" -dump "users"
+
+On constate que le dernier utilisateur, nommé flag, contient le commentaire « Déchiffrer ce mot de passe, puis mettre tous les caractère en minuscule. Sh256 et c’est bon. »
+
+Le mot de passe : 5ff9d0165b4f92b14994e5c685cdce28
+Ayant une longueur de 32 caractères, j’essaye de le déchiffrer en MD5, via un outil web, et j’obtiens ce mot de passe : FortyTwo
+« fortytwo », chiffré en sha256, comme indiqué dans le commentaire, donne le premier flag : 
+10a16d834f9b1e4068b25c4c46fe0284e99e44dceaf08098fc83925ba6310ff5
 
